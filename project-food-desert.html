@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Predicting Food Deserts in the United States — Samin Abrar</title>
+<meta name="description" content="Group project comparing five machine learning models to predict U.S. food deserts using USDA data.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Prata&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-nav">
+  <div class="nav-inner">
+    <div class="brand"><a href="index.html" style="color:inherit;text-decoration:none;">Samin <span>Abrar</span></a></div>
+    <nav class="links" style="position:static;max-height:none;overflow:visible;">
+      <a href="index.html#projects">All Projects</a>
+      <a href="index.html#contact" class="nav-cta">Contact Me</a>
+    </nav>
+  </div>
+</header>
+
+<div class="case-page-hero">
+  <div class="wrap">
+    <a href="index.html#projects" class="back-link">&larr; Back to all projects</a>
+    <h1>Predicting Food Deserts in the United States</h1>
+    <div class="meta-row">
+      <span class="tag" style="background:rgba(241,236,222,.15);color:#EDEAE0;">Group academic project (5 members) &middot; Managing with Big Data</span>
+      <span class="tag" style="background:rgba(241,236,222,.15);color:#EDEAE0;">Machine Learning</span><span class="tag" style="background:rgba(241,236,222,.15);color:#EDEAE0;">Big Data</span>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="case-content">
+    <div class="result-banner">Random Forest achieved the best balance of precision and recall (F1 = 0.896), with income, vehicle access, and food-assistance participation as the strongest predictors.</div>
+    
+    <h5>Project overview</h5>
+    <p>This project asked a simple but important question: what makes a U.S. community a "food desert" &mdash; an area where people struggle to access affordable, healthy food? Using real data from the USDA, my team built and compared several machine learning models to find out which factors matter most, then mapped the results across U.S. states.</p>
+    <h5>Business problem / research question</h5>
+    <p>Which socioeconomic and geographic factors most accurately predict the likelihood of a region becoming a food desert, and where should policymakers focus limited resources?</p>
+    <h5>Project classification</h5>
+    <p>Group academic project (5 members).</p>
+    <h5>My contribution</h5>
+    <p>Contributed across the project lifecycle as part of a 5-person team effort, covering data preparation, modelling, and interpretation alongside teammates.</p>
+    <h5>Approach</h5>
+    <ul>
+      <li>Sourced and cleaned data from the USDA's Food Access Research Atlas</li>
+      <li>Ran statistical inference to test whether rural areas face higher food-desert rates than urban areas, after controlling for poverty and vehicle access</li>
+      <li>Built and compared five classification models: Logistic Regression, Decision Tree, Random Forest, SVM, and a Neural Network, using a 70/30 train-test split</li>
+      <li>Ran a formal data-leakage check before trusting the results</li>
+      <li>Mapped food-desert distribution and its overlap with poverty and transport access across U.S. states in Tableau</li>
+    </ul>
+    <h5>Tools &amp; methods</h5>
+    <p>Python, scikit-learn, Tableau &middot; Logistic Regression, Decision Tree, Random Forest, SVM, Neural Network &middot; class-imbalance handling &middot; Gini-based feature importance</p>
+    <h5>Key findings</h5>
+    <ul>
+      <li>Random Forest and the Neural Network tied for the best F1 score (0.896); Random Forest had the best precision and specificity (0.946 / 0.986)</li>
+      <li>The strongest predictors were the share of low-income residents living far from food stores, lack of vehicle access, and SNAP (food assistance) participation &mdash; not geography alone</li>
+    </ul>
+    <h5>Business relevance</h5>
+    <p>Gives policymakers and community planners a way to prioritise where new grocery access, transport links, or subsidies would have the most impact, rather than spreading resources evenly.</p>
+    <h5>Limitations</h5>
+    <p>Findings are correlational, not causal; the dataset reflects one time period and may not capture more recent shifts in food access or transport infrastructure.</p>
+    
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">© 2026 Shah Mohammad Samin Abrar. <a href="index.html">Back to home</a></div>
+</footer>
+
+</body>
+</html>

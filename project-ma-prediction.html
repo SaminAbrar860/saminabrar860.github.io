@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Predicting M&A Acquisition Targets — Samin Abrar</title>
+<meta name="description" content="Individual project analysing 159,000+ real firm-level financial records to predict merger and acquisition targets.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Prata&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-nav">
+  <div class="nav-inner">
+    <div class="brand"><a href="index.html" style="color:inherit;text-decoration:none;">Samin <span>Abrar</span></a></div>
+    <nav class="links" style="position:static;max-height:none;overflow:visible;">
+      <a href="index.html#projects">All Projects</a>
+      <a href="index.html#contact" class="nav-cta">Contact Me</a>
+    </nav>
+  </div>
+</header>
+
+<div class="case-page-hero">
+  <div class="wrap">
+    <a href="index.html#projects" class="back-link">&larr; Back to all projects</a>
+    <h1>Predicting M&A Acquisition Targets</h1>
+    <div class="meta-row">
+      <span class="tag" style="background:rgba(241,236,222,.15);color:#EDEAE0;">Individual academic project &middot; Predictive &amp; Visual Analytics</span>
+      <span class="tag" style="background:rgba(241,236,222,.15);color:#EDEAE0;">Finance</span><span class="tag" style="background:rgba(241,236,222,.15);color:#EDEAE0;">Machine Learning</span>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="case-content">
+    <div class="result-banner">Built a logistic regression model on real firm-level data (2012&ndash;2022) showing that profitability, cash reserves, debt, and R&amp;D spending &mdash; not firm size or location &mdash; are the reliable signals.</div>
+    
+    <h5>Project overview</h5>
+    <p>Written from the perspective of a hedge-fund analyst, this project asks which financial characteristics make a U.S. firm more likely to become a merger-and-acquisition target &mdash; using real, large-scale financial data rather than a toy dataset.</p>
+    <h5>Business problem / research question</h5>
+    <p>Which firm-level financial characteristics predict the likelihood of a company becoming an M&amp;A target, and can this inform earlier, more confident investment screening?</p>
+    <h5>Project classification</h5>
+    <p>Individual academic project.</p>
+    <h5>My contribution</h5>
+    <p>Completed independently as an individual assignment.</p>
+    <h5>Approach</h5>
+    <ul>
+      <li>Merged two large real datasets: 159,032 rows of firm-level financials and 33,436 rows of historical M&amp;A targets (2012&ndash;2022)</li>
+      <li>Handled the ~13% missing data using an Iterative Imputer, which models each variable from the others rather than dropping rows</li>
+      <li>Validated the stability of summary statistics using bootstrapping (1,000 resamples)</li>
+      <li>Trimmed extreme outliers using percentile-based thresholds, reducing the working dataset from ~159,000 to ~38,000 rows for a cleaner analytical panel</li>
+      <li>Built three progressively refined logistic regression models, adding industry and year fixed effects</li>
+    </ul>
+    <h5>Tools &amp; methods</h5>
+    <p>Python (pandas, scikit-learn, statsmodels) &middot; logistic regression &middot; iterative imputation &middot; bootstrapping</p>
+    <h5>Key findings</h5>
+    <ul>
+      <li>Profitability, debt levels, cash reserves, and R&amp;D spending were reliable predictors of becoming an acquisition target</li>
+      <li>Sales growth and firm location (including California's tech hubs) were not reliable predictors, contrary to some conventional assumptions</li>
+    </ul>
+    <h5>Business relevance</h5>
+    <p>Gives an investment team a data-driven starting point for screening potential acquisition targets, to be paired with qualitative judgement rather than used alone.</p>
+    <h5>Limitations</h5>
+    <p>The sample period (2012&ndash;2022) may not reflect current market conditions; the model identifies correlation, not intent to sell.</p>
+    
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">© 2026 Shah Mohammad Samin Abrar. <a href="index.html">Back to home</a></div>
+</footer>
+
+</body>
+</html>
