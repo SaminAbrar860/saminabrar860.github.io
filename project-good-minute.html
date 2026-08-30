@@ -9,6 +9,24 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Prata&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<style>
+  .gm-tab{
+    background:var(--paper-2); border:1px solid var(--line); color:var(--text-soft);
+    padding:8px 16px; border-radius:16px; font-size:.85rem; cursor:pointer; font-family:'Public Sans',sans-serif;
+  }
+  .gm-tab.active{background:var(--ink); color:#fff; border-color:var(--ink);}
+  .gm-kpi-row{display:grid; grid-template-columns:repeat(5,1fr); gap:12px;}
+  @media(max-width:700px){ .gm-kpi-row{grid-template-columns:repeat(2,1fr);} }
+  .gm-kpi{background:var(--paper); border-radius:6px; padding:14px; text-align:center;}
+  .gm-kpi-num{font-family:'Prata',serif; font-size:1.3rem; color:var(--ink);}
+  .gm-kpi-label{font-size:.72rem; color:var(--text-soft); margin-top:4px; font-family:'IBM Plex Mono',monospace;}
+  .gm-chart-title{font-size:.85rem; font-weight:600; color:var(--ink); margin:0 0 8px;}
+  .gm-filter-label{font-size:.85rem; color:var(--text-soft); margin-right:8px;}
+  .gm-select{padding:6px 10px; border:1px solid var(--line); border-radius:4px; font-size:.85rem; font-family:'Public Sans',sans-serif;}
+  .gm-table{width:100%; border-collapse:collapse; font-size:.85rem;}
+  .gm-table td, .gm-table th{padding:8px 10px; border-bottom:1px solid var(--line); text-align:left; color:var(--text-soft);}
+  .gm-table th{color:var(--ink); font-weight:600;}
+</style>
 </head>
 <body>
 
@@ -36,7 +54,68 @@
 <div class="wrap">
   <div class="case-content">
     <div class="result-banner">Built and independently maintain a 3-page Power BI dashboard, updated every month since 2024, that the business actively uses to track performance.</div>
-    
+
+    <h5>Interactive demo</h5>
+    <p>The real dashboard uses actual restaurant figures, which stay private for confidentiality. Below is a working recreation of the same 3-page structure, KPIs, and chart types &mdash; built with illustrative numbers so you can genuinely interact with it.</p>
+
+    <div id="gm-dashboard" style="background:#fff; border:1px solid var(--line); border-radius:6px; padding:20px; margin:20px 0 32px;">
+      <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:20px; border-bottom:1px solid var(--line); padding-bottom:14px;">
+        <button class="gm-tab active" data-page="overview">Executive Overview</button>
+        <button class="gm-tab" data-page="sales">Sales Analysis</button>
+        <button class="gm-tab" data-page="cost">Cost Analysis</button>
+      </div>
+
+      <!-- OVERVIEW PAGE -->
+      <div class="gm-page" id="gm-overview">
+        <div class="gm-kpi-row">
+          <div class="gm-kpi"><div class="gm-kpi-num" id="kpi-profit">$0</div><div class="gm-kpi-label">Profit</div></div>
+          <div class="gm-kpi"><div class="gm-kpi-num" id="kpi-margin">0%</div><div class="gm-kpi-label">Profit Margin %</div></div>
+          <div class="gm-kpi"><div class="gm-kpi-num" id="kpi-roi">0%</div><div class="gm-kpi-label">ROI %</div></div>
+          <div class="gm-kpi"><div class="gm-kpi-num" id="kpi-revenue">$0</div><div class="gm-kpi-label">Total Revenue</div></div>
+          <div class="gm-kpi"><div class="gm-kpi-num" id="kpi-expenses">$0</div><div class="gm-kpi-label">Total Expenses</div></div>
+        </div>
+        <div style="display:grid; grid-template-columns:1.4fr 1fr; gap:20px; margin-top:20px;">
+          <div><p class="gm-chart-title">Revenue vs Expenses Trend</p><canvas id="gm-trend-chart" height="220"></canvas></div>
+          <div><p class="gm-chart-title">Revenue by Category</p><canvas id="gm-category-donut" height="220"></canvas></div>
+        </div>
+      </div>
+
+      <!-- SALES PAGE -->
+      <div class="gm-page" id="gm-sales" style="display:none;">
+        <div style="margin-bottom:16px;">
+          <label class="gm-filter-label">Filter by category: </label>
+          <select id="gm-category-filter" class="gm-select">
+            <option value="all">All categories</option>
+            <option value="Mains">Mains</option>
+            <option value="Beverages">Beverages</option>
+            <option value="Desserts">Desserts</option>
+            <option value="Sides">Sides</option>
+          </select>
+        </div>
+        <p class="gm-chart-title">Sales Trend</p>
+        <canvas id="gm-sales-trend" height="180"></canvas>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:24px;">
+          <div><p class="gm-chart-title">Top Items by Sales</p><canvas id="gm-top-sales" height="220"></canvas></div>
+          <div><p class="gm-chart-title">Top Items by Quantity</p><canvas id="gm-top-qty" height="220"></canvas></div>
+        </div>
+      </div>
+
+      <!-- COST PAGE -->
+      <div class="gm-page" id="gm-cost" style="display:none;">
+        <p class="gm-chart-title">Cost Trend</p>
+        <canvas id="gm-cost-trend" height="180"></canvas>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:24px;">
+          <div><p class="gm-chart-title">Cost Distribution</p><canvas id="gm-cost-donut" height="220"></canvas></div>
+          <div>
+            <p class="gm-chart-title">Expense Breakdown</p>
+            <table class="gm-table" id="gm-expense-table"></table>
+          </div>
+        </div>
+      </div>
+
+      <p style="font-size:.78rem; color:var(--text-soft); margin-top:20px; font-family:'IBM Plex Mono',monospace;">* Illustrative data for demonstration only &mdash; not the restaurant's actual figures.</p>
+    </div>
+
     <h5>Project overview</h5>
     <p>Good Minute is a real restaurant I co-manage. It needed a reliable way to track profitability, sales, and costs month to month, without hiring outside help. I built that system myself and still run it every month.</p>
     <h5>Business problem / research question</h5>
@@ -67,6 +146,160 @@
 <footer>
   <div class="wrap">© 2026 Shah Mohammad Samin Abrar. <a href="index.html">Back to home</a></div>
 </footer>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script>
+(function(){
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+  // Illustrative revenue by category, per month
+  const revenueByCategory = {
+    Mains:      [4200,3900,4400,4600,5100,4300,4700,4900,5200,5400,5300,6100],
+    Beverages:  [1800,1700,1900,2000,2200,2000,2100,2200,2300,2400,2350,2700],
+    Desserts:   [900,850,950,1000,1100,1000,1050,1100,1150,1200,1180,1400],
+    Sides:      [700,650,720,750,800,760,780,820,850,880,860,980]
+  };
+  const categories = Object.keys(revenueByCategory);
+
+  // Illustrative expenses by type, per month
+  const expensesByType = {
+    Materials: [2400,2300,2500,2600,2800,2500,2650,2750,2850,2950,2900,3300],
+    Salary:    [3200,3200,3200,3200,3400,3400,3400,3400,3400,3600,3600,3600],
+    Utilities: [650,600,680,700,750,700,720,740,760,800,780,900]
+  };
+  const expenseTypes = Object.keys(expensesByType);
+
+  const investment = 40000; // illustrative one-off investment figure
+
+  // Illustrative top items
+  const items = [
+    {name:'Grilled Chicken Bowl', category:'Mains', sales:9800, qty:820},
+    {name:'Iced Latte', category:'Beverages', sales:6200, qty:1450},
+    {name:'Beef Burger', category:'Mains', sales:8100, qty:690},
+    {name:'Chocolate Brownie', category:'Desserts', sales:3400, qty:560},
+    {name:'Sparkling Water', category:'Beverages', sales:2100, qty:980},
+    {name:'Loaded Fries', category:'Sides', sales:3900, qty:710},
+    {name:'Caesar Salad', category:'Mains', sales:4600, qty:410},
+    {name:'Cheesecake', category:'Desserts', sales:2900, qty:340},
+  ];
+
+  function sumArr(a){ return a.reduce((x,y)=>x+y,0); }
+  function totalRevenueByMonth(){
+    return months.map((_,i)=> categories.reduce((s,c)=> s + revenueByCategory[c][i], 0));
+  }
+  function totalExpenseByMonth(){
+    return months.map((_,i)=> expenseTypes.reduce((s,t)=> s + expensesByType[t][i], 0));
+  }
+  function fmt(n){ return '$' + Math.round(n).toLocaleString(); }
+
+  const ink = '#0B1E33', brass = '#A6822E', teal = '#2F6F6E', signal='#A63D2F', paper2='#E8E1CE';
+  Chart.defaults.font.family = "'Public Sans', sans-serif";
+  Chart.defaults.color = '#4A5563';
+
+  // ---- KPIs ----
+  const revByMonth = totalRevenueByMonth();
+  const expByMonth = totalExpenseByMonth();
+  const totalRevenue = sumArr(revByMonth);
+  const totalExpenses = sumArr(expByMonth);
+  const profit = totalRevenue - totalExpenses;
+  const margin = (profit/totalRevenue*100).toFixed(1);
+  const roi = (profit/investment*100).toFixed(1);
+
+  document.getElementById('kpi-profit').textContent = fmt(profit);
+  document.getElementById('kpi-margin').textContent = margin + '%';
+  document.getElementById('kpi-roi').textContent = roi + '%';
+  document.getElementById('kpi-revenue').textContent = fmt(totalRevenue);
+  document.getElementById('kpi-expenses').textContent = fmt(totalExpenses);
+
+  // ---- Overview: trend chart ----
+  new Chart(document.getElementById('gm-trend-chart'), {
+    type:'line',
+    data:{ labels:months, datasets:[
+      {label:'Revenue', data:revByMonth, borderColor:teal, backgroundColor:teal, tension:.3},
+      {label:'Expenses', data:expByMonth, borderColor:signal, backgroundColor:signal, tension:.3}
+    ]},
+    options:{ responsive:true, plugins:{legend:{position:'bottom'}} }
+  });
+
+  // ---- Overview: category donut ----
+  new Chart(document.getElementById('gm-category-donut'), {
+    type:'doughnut',
+    data:{ labels:categories, datasets:[{
+      data: categories.map(c=> sumArr(revenueByCategory[c])),
+      backgroundColor:[ink, brass, teal, '#8A98A8']
+    }]},
+    options:{ responsive:true, plugins:{legend:{position:'bottom'}} }
+  });
+
+  // ---- Sales page ----
+  let salesTrendChart, topSalesChart, topQtyChart;
+  function renderSalesPage(filter){
+    const filteredItems = filter==='all' ? items : items.filter(i=>i.category===filter);
+    const trendData = filter==='all' ? revByMonth : months.map((_,i)=> revenueByCategory[filter][i]);
+
+    if(salesTrendChart) salesTrendChart.destroy();
+    salesTrendChart = new Chart(document.getElementById('gm-sales-trend'), {
+      type:'line',
+      data:{ labels:months, datasets:[{label:'Sales', data:trendData, borderColor:brass, backgroundColor:brass, tension:.3}]},
+      options:{ responsive:true, plugins:{legend:{display:false}} }
+    });
+
+    const sortedBySales = [...filteredItems].sort((a,b)=>b.sales-a.sales).slice(0,6);
+    if(topSalesChart) topSalesChart.destroy();
+    topSalesChart = new Chart(document.getElementById('gm-top-sales'), {
+      type:'bar',
+      data:{ labels:sortedBySales.map(i=>i.name), datasets:[{label:'Sales ($)', data:sortedBySales.map(i=>i.sales), backgroundColor:teal}]},
+      options:{ indexAxis:'y', responsive:true, plugins:{legend:{display:false}} }
+    });
+
+    const sortedByQty = [...filteredItems].sort((a,b)=>b.qty-a.qty).slice(0,6);
+    if(topQtyChart) topQtyChart.destroy();
+    topQtyChart = new Chart(document.getElementById('gm-top-qty'), {
+      type:'bar',
+      data:{ labels:sortedByQty.map(i=>i.name), datasets:[{label:'Quantity', data:sortedByQty.map(i=>i.qty), backgroundColor:brass}]},
+      options:{ indexAxis:'y', responsive:true, plugins:{legend:{display:false}} }
+    });
+  }
+  document.getElementById('gm-category-filter').addEventListener('change', e=> renderSalesPage(e.target.value));
+
+  // ---- Cost page ----
+  new Chart(document.getElementById('gm-cost-trend'), {
+    type:'line',
+    data:{ labels:months, datasets:[{label:'Total Expenses', data:expByMonth, borderColor:signal, backgroundColor:signal, tension:.3}]},
+    options:{ responsive:true, plugins:{legend:{display:false}} }
+  });
+  new Chart(document.getElementById('gm-cost-donut'), {
+    type:'doughnut',
+    data:{ labels:expenseTypes, datasets:[{
+      data: expenseTypes.map(t=> sumArr(expensesByType[t])),
+      backgroundColor:[ink, brass, teal]
+    }]},
+    options:{ responsive:true, plugins:{legend:{position:'bottom'}} }
+  });
+  const expenseTable = document.getElementById('gm-expense-table');
+  let tableHtml = '<tr><th>Category</th><th>Annual Total</th><th>% of Expenses</th></tr>';
+  expenseTypes.forEach(t=>{
+    const val = sumArr(expensesByType[t]);
+    tableHtml += `<tr><td>${t}</td><td>${fmt(val)}</td><td>${(val/totalExpenses*100).toFixed(1)}%</td></tr>`;
+  });
+  expenseTable.innerHTML = tableHtml;
+
+  // ---- Tab switching ----
+  document.querySelectorAll('.gm-tab').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('.gm-tab').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.gm-page').forEach(p=>p.style.display='none');
+      const page = btn.getAttribute('data-page');
+      document.getElementById('gm-'+page).style.display='block';
+      if(page==='sales') renderSalesPage(document.getElementById('gm-category-filter').value);
+    });
+  });
+
+  // initial render
+  renderSalesPage('all');
+})();
+</script>
 
 </body>
 </html>
