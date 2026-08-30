@@ -86,10 +86,10 @@
           <label class="gm-filter-label">Filter by category: </label>
           <select id="gm-category-filter" class="gm-select">
             <option value="all">All categories</option>
-            <option value="Mains">Mains</option>
-            <option value="Beverages">Beverages</option>
-            <option value="Desserts">Desserts</option>
-            <option value="Sides">Sides</option>
+            <option value="Hot & Spicy">Hot & Spicy</option>
+            <option value="Waffle">Waffle</option>
+            <option value="Confectionery">Confectionery</option>
+            <option value="Drinks">Drinks</option>
           </select>
         </div>
         <p class="gm-chart-title">Sales Trend</p>
@@ -152,36 +152,39 @@
 (function(){
   const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
-  // Illustrative revenue by category, per month
+  // Illustrative revenue by category, per month (category names reflect real menu structure; figures are fictional)
   const revenueByCategory = {
-    Mains:      [4200,3900,4400,4600,5100,4300,4700,4900,5200,5400,5300,6100],
-    Beverages:  [1800,1700,1900,2000,2200,2000,2100,2200,2300,2400,2350,2700],
-    Desserts:   [900,850,950,1000,1100,1000,1050,1100,1150,1200,1180,1400],
-    Sides:      [700,650,720,750,800,760,780,820,850,880,860,980]
+    'Hot & Spicy':  [2200,2000,2300,2400,2600,2300,2450,2550,2650,2750,2700,3100],
+    'Waffle':       [2100,1950,2250,2350,2550,2250,2400,2500,2600,2700,2650,3050],
+    'Confectionery':[1800,1650,1900,2000,2150,1900,2050,2150,2250,2350,2300,2650],
+    'Drinks':       [1250,1150,1350,1400,1550,1350,1450,1500,1600,1650,1620,1900],
+    'Donut':        [680,620,720,760,820,740,780,820,860,900,880,1020],
+    'Combo':        [460,420,480,510,550,500,530,560,590,620,610,700]
   };
   const categories = Object.keys(revenueByCategory);
 
-  // Illustrative expenses by type, per month
+  // Illustrative expenses by type, per month (categories reflect real structure; figures are fictional; no individual staff data)
   const expensesByType = {
     Materials: [2400,2300,2500,2600,2800,2500,2650,2750,2850,2950,2900,3300],
     Salary:    [3200,3200,3200,3200,3400,3400,3400,3400,3400,3600,3600,3600],
-    Utilities: [650,600,680,700,750,700,720,740,760,800,780,900]
+    'Utilities & Operations': [650,600,680,700,750,700,720,740,760,800,780,900]
   };
   const expenseTypes = Object.keys(expensesByType);
 
-  const investment = 40000; // illustrative one-off investment figure
+  const investment = 80000; // illustrative
 
-  // Illustrative top items
+  // Illustrative top items (real item names from the menu; sales/quantity figures are fictional)
   const items = [
-    {name:'Grilled Chicken Bowl', category:'Mains', sales:9800, qty:820},
-    {name:'Iced Latte', category:'Beverages', sales:6200, qty:1450},
-    {name:'Beef Burger', category:'Mains', sales:8100, qty:690},
-    {name:'Chocolate Brownie', category:'Desserts', sales:3400, qty:560},
-    {name:'Sparkling Water', category:'Beverages', sales:2100, qty:980},
-    {name:'Loaded Fries', category:'Sides', sales:3900, qty:710},
-    {name:'Caesar Salad', category:'Mains', sales:4600, qty:410},
-    {name:'Cheesecake', category:'Desserts', sales:2900, qty:340},
+    {name:'Brownie', category:'Confectionery', sales:9200, qty:1050},
+    {name:'Black Jack', category:'Hot & Spicy', sales:7400, qty:820},
+    {name:'Meat Box', category:'Hot & Spicy', sales:8600, qty:690},
+    {name:'Lazy Nutella', category:'Waffle', sales:6100, qty:570},
+    {name:'Sweet Heart', category:'Waffle', sales:4300, qty:460},
+    {name:'Brownie with Ice Cream', category:'Confectionery', sales:4700, qty:440},
+    {name:'Ice Cream', category:'Confectionery', sales:3200, qty:430},
+    {name:'Soft Drinks', category:'Drinks', sales:2600, qty:390},
   ];
+
 
   function sumArr(a){ return a.reduce((x,y)=>x+y,0); }
   function totalRevenueByMonth(){
