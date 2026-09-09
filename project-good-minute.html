@@ -15,12 +15,42 @@
     padding:8px 16px; border-radius:16px; font-size:.85rem; cursor:pointer; font-family:'Public Sans',sans-serif;
   }
   .gm-tab.active{background:var(--ink); color:#fff; border-color:var(--ink);}
-  .gm-kpi-row{display:grid; grid-template-columns:repeat(5,1fr); gap:12px;}
-  @media(max-width:900px){ .gm-kpi-row{grid-template-columns:repeat(3,1fr);} }
-  @media(max-width:520px){ .gm-kpi-row{grid-template-columns:repeat(2,1fr);} }
-  .gm-kpi{background:var(--paper); border-radius:6px; padding:14px; text-align:center;}
-  .gm-kpi-num{font-family:'Prata',serif; font-size:1.3rem; color:var(--ink);}
-  .gm-kpi-label{font-size:.72rem; color:var(--text-soft); margin-top:4px; font-family:'IBM Plex Mono',monospace;}
+  .gm-kpi-row{
+  display:grid;
+  grid-template-columns:repeat(6,1fr);
+  gap:12px;
+}
+
+.gm-kpi{
+  background:var(--paper);
+  border-radius:6px;
+  padding:14px 8px;
+  text-align:center;
+  min-width:0;
+}
+
+.gm-kpi-num{
+  font-family:'Prata',serif;
+  font-size:1.3rem;
+  color:var(--ink);
+  white-space:nowrap;
+}
+
+.gm-kpi-label{
+  font-size:.68rem;
+  color:var(--text-soft);
+  margin-top:4px;
+  font-family:'IBM Plex Mono',monospace;
+  white-space:nowrap;
+}
+
+@media(max-width:900px){
+  .gm-kpi-row{grid-template-columns:repeat(3,1fr);}
+}
+
+@media(max-width:520px){
+  .gm-kpi-row{grid-template-columns:repeat(2,1fr);}
+}
   .gm-chart-title{font-size:.85rem; font-weight:600; color:var(--ink); margin:0 0 8px;}
   .gm-filter-label{font-size:.85rem; color:var(--text-soft); margin-right:8px;}
   .gm-select{padding:6px 10px; border:1px solid var(--line); border-radius:4px; font-size:.85rem; font-family:'Public Sans',sans-serif;}
@@ -59,7 +89,7 @@
     <h5>Interactive demo</h5>
     <p>The real dashboard uses actual restaurant figures which are kept private for confidentiality. A fully reconstructed three-page report has been prepared, replicating the original structure, KPIs and chart types. Illustrative data has been used to enable interaction and exploration.</p>
 
-    <div id="gm-dashboard" style="background:#fff; border:1px solid var(--line); border-radius:6px; padding:20px; margin:20px 0 32px;">
+    <div id="gm-dashboard" style="background:#fff; border:1px solid var(--line); border-radius:6px; padding:20px; margin:20px -120px 32px;">
       <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:20px; border-bottom:1px solid var(--line); padding-bottom:14px;">
         <button class="gm-tab active" data-page="overview">Executive Overview</button>
         <button class="gm-tab" data-page="sales">Sales Analysis</button>
