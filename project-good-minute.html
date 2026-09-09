@@ -271,22 +271,23 @@ const revenueByCategory = {
 // later months show improving operating performance.
 const expensesByType = {
   Materials: [
-    54000,44550,31950,24300,18000,27000,21600,12600,15750,
-    14850,33300,13950,47250,26100,27000,27000,19800,22500,
-    16200,18450,15750,9900,15300,12600,15300,17100,12600
-  ],
+  89000,68500,41000,24500,11000,30500,19000,1000,7000,
+  5000,43500,3500,74000,28500,44500,44000,29000,34500,
+  21500,26000,20500,8500,19500,14000,19500,23000,14000
+],
 
   Salary: [
-    51600,42570,30530,23220,17200,25800,20640,12040,15050,
-    14190,31820,13330,45150,24940,25800,25800,18920,21500,
-    15480,17630,15050,9460,14620,12040,14620,16340,12040
-  ],
+  26000,26000,26000,26000,26000,26000,26000,26000,26000,
+  26000,26000,26000,26000,26000,
+  12000,12000,12000,12000,12000,12000,12000,
+  12000,12000,12000,12000,12000,12000
+],
 
   'Utilities & Operations': [
-    14400,11880,8520,6480,4800,7200,5760,3360,4200,
-    3960,8880,3720,12600,6960,7200,7200,5280,6000,
-    4320,4920,4200,2640,4080,3360,4080,4560,3360
-  ]};
+  5000,4500,4000,3500,3000,3500,3000,1000,2000,
+  2000,4500,1500,5000,3500,3500,4000,3000,3500,
+  2500,3000,2500,1500,2500,2000,2500,3000,2000
+]};
   const expenseTypes = Object.keys(expensesByType);
 
   const investment = 1500000; // illustrative, Tk
@@ -630,7 +631,8 @@ new Chart(document.getElementById('gm-top-sales'), {
   document.getElementById('kpi-utilities').textContent = fmt(totalUtilities);
 
   new Chart(document.getElementById('gm-cost-trend'), {
-    type:'line',
+    plugins:[legendSpacing],
+type:'line',
     data:{ labels:months, datasets:[
       {label:'Materials', data:expensesByType['Materials'], borderColor:teal, backgroundColor:teal, tension:0, pointRadius:4, pointBackgroundColor:teal, borderWidth:2},
       {label:'Salary', data:expensesByType['Salary'], borderColor:ink, backgroundColor:ink, tension:0, pointRadius:4, pointBackgroundColor:ink, borderWidth:2},
@@ -656,14 +658,30 @@ new Chart(document.getElementById('gm-top-sales'), {
   });
 
   const expenseTable = document.getElementById('gm-expense-table');
-  const expenseItems = [
-    {category:'Materials', item:'Bulk Purchase', amount: totalMaterials*0.42},
-    {category:'Materials', item:'Chicken', amount: totalMaterials*0.31},
-    {category:'Materials', item:'Other Ingredients', amount: totalMaterials*0.27},
-    {category:'Salary', item:'Staff Wages', amount: totalSalary},
-    {category:'Utilities & Operations', item:'Electricity Bill', amount: totalUtilities*0.62},
-    {category:'Utilities & Operations', item:'Other Operations', amount: totalUtilities*0.38},
-  ];
+  const waterTotal = 300 * 26;       // May 2024 - Jun 2026
+const softwareTotal = 1200 * 26;   // May 2024 - Jun 2026
+const electricityTotal = totalUtilities - waterTotal - softwareTotal;
+
+const expenseItems = [
+  {category:'Materials', item:'Chicken', amount: Math.round(totalMaterials * 0.36)},
+  {category:'Materials', item:'Nutella', amount: Math.round(totalMaterials * 0.25)},
+  {category:'Materials', item:'Cooking Oil', amount: Math.round(totalMaterials * 0.21)},
+  {
+    category:'Materials',
+    item:'Chocolate',
+    amount:
+      totalMaterials
+      - Math.round(totalMaterials * 0.36)
+      - Math.round(totalMaterials * 0.25)
+      - Math.round(totalMaterials * 0.21)
+  },
+
+  {category:'Salary', item:'Staff Wages', amount: totalSalary},
+
+  {category:'Utilities & Operations', item:'Electricity Bill', amount: electricityTotal},
+  {category:'Utilities & Operations', item:'Water Bill', amount: waterTotal},
+  {category:'Utilities & Operations', item:'Software Bill', amount: softwareTotal}
+];
   let tableHtml = '<tr><th>Category</th><th>Item</th><th>Amount</th></tr>';
   expenseItems.forEach(e=>{
     tableHtml += `<tr><td>${e.category}</td><td>${e.item}</td><td>${fmt(e.amount)}</td></tr>`;
