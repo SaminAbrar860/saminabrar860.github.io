@@ -149,7 +149,7 @@
           <div class="gm-kpi"><div class="gm-kpi-num" id="kpi-salary">Tk 0</div><div class="gm-kpi-label">Total Salary Cost</div></div>
           <div class="gm-kpi"><div class="gm-kpi-num" id="kpi-utilities">Tk 0</div><div class="gm-kpi-label">Total Utilities &amp; Operations</div></div>
         </div>
-        <p class="gm-chart-title" style="margin-top:24px;">Cost Trend</p>
+        <p class="gm-chart-title" style="margin-top:12px; margin-bottom:-10px;">Cost Trend</p>
         <canvas id="gm-cost-trend" height="150"></canvas>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:24px;">
           <div><p class="gm-chart-title">Cost Distribution</p><canvas id="gm-cost-donut" height="220"></canvas></div>
@@ -270,42 +270,84 @@ const revenueByCategory = {
 // Early months intentionally include losses;
 // later months show improving operating performance.
 const expensesByType = {
+
+  // Total ≈ Tk 715K
   Materials: [
-  89000,68500,41000,24500,11000,30500,19000,1000,7000,
-  5000,43500,3500,74000,28500,44500,44000,29000,34500,
-  21500,26000,20500,8500,19500,14000,19500,23000,14000
-],
+    42000,35000,30000,25000,22000,27000,24000,18000,20000,
+    21000,33000,23000,40000,28000,30000,32000,27000,29000,
+    24000,26000,25000,21000,24000,23000,26000,28000,22000
+  ],
 
+  // Total ≈ Tk 420K
+  // Lower staffing cost initially, increasing as the business develops
   Salary: [
-  26000,26000,26000,26000,26000,26000,26000,26000,26000,
-  26000,26000,26000,26000,26000,
-  12000,12000,12000,12000,12000,12000,12000,
-  12000,12000,12000,12000,12000,12000
-],
+    12000,12000,12000,12000,12000,12000,12000,12000,12000,
+    12000,12000,12000,12000,12000,
+    16000,16000,16000,16000,16000,16000,
+    18000,18000,18000,
+    20000,20000,
+    26000,26000
+  ],
 
-  'Utilities & Operations': [
-  5000,4500,4000,3500,3000,3500,3000,1000,2000,
-  2000,4500,1500,5000,3500,3500,4000,3000,3500,
-  2500,3000,2500,1500,2500,2000,2500,3000,2000
-]};
+  // Total ≈ Tk 232K
+'Utilities & Operations': [
+  6000,8500,6500,9000,7500,10000,7000,8000,9500,
+  7500,10500,8000,9000,7000,11000,8500,10000,7500,
+  9500,11000,8000,10500,9000,11500,8500,12000,10000
+]
+
+};
   const expenseTypes = Object.keys(expensesByType);
 
   const investment = 1500000; // illustrative, Tk
 
   // Illustrative top items (real item names from the menu; sales/quantity figures are fictional)
-  const items = [
-    {name:'Meat Box', category:'Hot & Spicy', sales:182000, qty:1210},
-    {name:'Lazy Nutella', category:'Waffle', sales:132000, qty:1030},
-    {name:'Brownie', category:'Confectionery', sales:126000, qty:1900},
-    {name:'Brownie with Ice Cream', category:'Confectionery', sales:87000, qty:820},
-    {name:'Cookie Blast', category:'Waffle', sales:61000, qty:610},
-    {name:'Nutty Chocolate Heaven', category:'Waffle', sales:59000, qty:590},
-    {name:'Black Jack', category:'Donut', sales:45000, qty:1450},
-    {name:'Iced Coffee Small', category:'Drinks', sales:44500, qty:475},
-    {name:'Sweet Heart', category:'Donut', sales:38000, qty:835},
-    {name:'Chicken Fry', category:'Hot & Spicy', sales:42000, qty:390},
-    {name:'Combo', category:'Combo', sales:44000, qty:220},
-  ];
+  // Illustrative item-level data.
+// Real menu-item names; sales and quantity figures are fictional.
+// Item sales within each category sum to the illustrative category total.
+const items = [
+
+  // ================= HOT & SPICY — Tk 409K =================
+  {name:'Meat Box', category:'Hot & Spicy', sales:178000, qty:1190},
+  {name:'Chicken Fry', category:'Hot & Spicy', sales:61000, qty:390},
+  {name:'Tortilla Wrap', category:'Hot & Spicy', sales:52000, qty:330},
+  {name:'Masala Fry', category:'Hot & Spicy', sales:42000, qty:300},
+  {name:'Chicken Burger', category:'Hot & Spicy', sales:39000, qty:260},
+  {name:'Hot & Spicy Special', category:'Hot & Spicy', sales:37000, qty:240},
+
+  // ================= WAFFLE — Tk 394K =================
+  {name:'Lazy Nutella', category:'Waffle', sales:118000, qty:900},
+  {name:'Nutty Chocolate Heaven', category:'Waffle', sales:68000, qty:500},
+  {name:'Red Velvet', category:'Waffle', sales:57000, qty:390},
+  {name:'Blueberry Bilberry', category:'Waffle', sales:47000, qty:330},
+  {name:'Banana Waffle', category:'Waffle', sales:39000, qty:300},
+  {name:'Cookie Blast', category:'Waffle', sales:65000, qty:450},
+
+  // ============== CONFECTIONERY — Tk 321K ==============
+  {name:'Brownie', category:'Confectionery', sales:121000, qty:1840},
+  {name:'Brownie with Ice Cream', category:'Confectionery', sales:72000, qty:780},
+  {name:'Ice Cream', category:'Confectionery', sales:52000, qty:690},
+  {name:'Cake in My Shake Large', category:'Confectionery', sales:30000, qty:230},
+  {name:'Cake in My Shake Small', category:'Confectionery', sales:26000, qty:280},
+  {name:'Chocolate Brownie', category:'Confectionery', sales:20000, qty:240},
+
+  // ================= DRINKS — Tk 205K =================
+  {name:'Iced Coffee Small', category:'Drinks', sales:57000, qty:470},
+  {name:'Iced Coffee Large', category:'Drinks', sales:42000, qty:290},
+  {name:'Water', category:'Drinks', sales:29000, qty:700},
+  {name:'Soft Drinks', category:'Drinks', sales:32000, qty:480},
+  {name:'Dokhina Sakura', category:'Drinks', sales:25000, qty:180},
+  {name:'Cold Coffee', category:'Drinks', sales:20000, qty:150},
+
+  // ================= DONUT — Tk 88K =================
+  {name:'Black Jack', category:'Donut', sales:39000, qty:1100},
+  {name:'Sweet Heart', category:'Donut', sales:24000, qty:720},
+  {name:'Blueberry', category:'Donut', sales:13000, qty:350},
+  {name:'Orbit White', category:'Donut', sales:12000, qty:320},
+
+  // ================= COMBO — Tk 44K =================
+  {name:'Combo', category:'Combo', sales:44000, qty:220}
+];;
 
   function sumArr(a){ return a.reduce((x,y)=>x+y,0); }
   function totalRevenueByMonth(){
@@ -561,10 +603,31 @@ new Chart(document.getElementById('gm-top-sales'), {
       const qty = items.filter(i=>i.category===c).reduce((s,i)=>s+i.qty,0);
       totalSales += sales; totalQty += qty;
       const hl = (filter==='all' || filter===c) ? '' : 'style="opacity:.35;"';
-      rows += `<tr ${hl}><td>${c}</td><td>${fmt(sales)}</td><td>${qty.toLocaleString()}</td></tr>`;
+      rows += `
+  <tr
+    data-category="${c}"
+    style="
+      cursor:pointer;
+      ${filter===c ? 'background:#F1EBDD;font-weight:700;' : ''}
+    "
+  >
+    <td>${c}</td>
+    <td>${fmt(sales)}</td>
+    <td>${qty.toLocaleString()}</td>
+  </tr>
+`;
     });
     rows += `<tr><td><strong>Total</strong></td><td><strong>${fmt(totalSales)}</strong></td><td><strong>${totalQty.toLocaleString()}</strong></td></tr>`;
     table.innerHTML = rows;
+table.querySelectorAll('tr[data-category]').forEach(row => {
+  row.addEventListener('click', () => {
+    const category = row.dataset.category;
+
+    document.getElementById('gm-category-filter').value = category;
+
+    renderSalesPage(category);
+  });
+});
   }
   function renderSalesPage(filter){
     const filteredItems = filter==='all' ? items : items.filter(i=>i.category===filter);
@@ -623,49 +686,23 @@ new Chart(document.getElementById('gm-top-sales'), {
   document.getElementById('gm-category-filter').addEventListener('change', e=> renderSalesPage(e.target.value));
 
   // ---- Cost page ----
-  const totalMaterials = sumArr(expensesByType['Materials']);
-  const totalSalary = sumArr(expensesByType['Salary']);
-  const totalUtilities = sumArr(expensesByType['Utilities & Operations']);
-  document.getElementById('kpi-materials').textContent = fmt(totalMaterials);
-  document.getElementById('kpi-salary').textContent = fmt(totalSalary);
-  document.getElementById('kpi-utilities').textContent = fmt(totalUtilities);
+const totalMaterials = sumArr(expensesByType['Materials']);
+const totalSalary = sumArr(expensesByType['Salary']);
+const totalUtilities = sumArr(expensesByType['Utilities & Operations']);
 
-  new Chart(document.getElementById('gm-cost-trend'), {
-    plugins:[legendSpacing],
-type:'line',
-    data:{ labels:months, datasets:[
-      {label:'Materials', data:expensesByType['Materials'], borderColor:teal, backgroundColor:teal, tension:0, pointRadius:4, pointBackgroundColor:teal, borderWidth:2},
-      {label:'Salary', data:expensesByType['Salary'], borderColor:ink, backgroundColor:ink, tension:0, pointRadius:4, pointBackgroundColor:ink, borderWidth:2},
-      {label:'Utilities & Operations', data:expensesByType['Utilities & Operations'], borderColor:signal, backgroundColor:signal, tension:0, pointRadius:4, pointBackgroundColor:signal, borderWidth:2}
-    ]},
-    options:{ responsive:true,
-      scales:{ x:{grid:{display:false}}, y:{grid:{color:'#EFEBDE'}, ticks:{callback:v=>fmtShort(v)}} },
-      plugins:{legend:{position:'top', align:'start', labels:{usePointStyle:true, pointStyle:'circle', font:{weight:'600'}}}, datalabels:{display:false}}
-    }
-  });
-  new Chart(document.getElementById('gm-cost-donut'), {
-    type:'doughnut',
-    data:{ labels:expenseTypes, datasets:[{
-      data: [totalMaterials, totalSalary, totalUtilities],
-      backgroundColor:[teal, ink, signal]
-    }]},
-    options:{ responsive:true, plugins:{legend:{position:'bottom'},
-      datalabels:{formatter:(v,ctx)=>{
-        const total = totalMaterials+totalSalary+totalUtilities;
-        return (v/total*100).toFixed(1)+'%';
-      }, color:'#fff', font:{weight:'600'}}
-    }}
-  });
+document.getElementById('kpi-materials').textContent = fmt(totalMaterials);
+document.getElementById('kpi-salary').textContent = fmt(totalSalary);
+document.getElementById('kpi-utilities').textContent = fmt(totalUtilities);
 
-  const expenseTable = document.getElementById('gm-expense-table');
-  const waterTotal = 300 * 26;       // May 2024 - Jun 2026
-const softwareTotal = 1200 * 26;   // May 2024 - Jun 2026
+// Expense breakdown
+const waterTotal = 300 * 26;
+const softwareTotal = 1200 * 26;
 const electricityTotal = totalUtilities - waterTotal - softwareTotal;
 
 const expenseItems = [
-  {category:'Materials', item:'Chicken', amount: Math.round(totalMaterials * 0.36)},
-  {category:'Materials', item:'Nutella', amount: Math.round(totalMaterials * 0.25)},
-  {category:'Materials', item:'Cooking Oil', amount: Math.round(totalMaterials * 0.21)},
+  {category:'Materials', item:'Chicken', amount:Math.round(totalMaterials * 0.36)},
+  {category:'Materials', item:'Nutella', amount:Math.round(totalMaterials * 0.25)},
+  {category:'Materials', item:'Cooking Oil', amount:Math.round(totalMaterials * 0.21)},
   {
     category:'Materials',
     item:'Chocolate',
@@ -676,18 +713,295 @@ const expenseItems = [
       - Math.round(totalMaterials * 0.21)
   },
 
-  {category:'Salary', item:'Staff Wages', amount: totalSalary},
+  {category:'Salary', item:'Staff Wages', amount:totalSalary},
 
-  {category:'Utilities & Operations', item:'Electricity Bill', amount: electricityTotal},
-  {category:'Utilities & Operations', item:'Water Bill', amount: waterTotal},
-  {category:'Utilities & Operations', item:'Software Bill', amount: softwareTotal}
+  {category:'Utilities & Operations', item:'Electricity Bill', amount:electricityTotal},
+  {category:'Utilities & Operations', item:'Software Bill', amount:softwareTotal},
+  {category:'Utilities & Operations', item:'Water Bill', amount:waterTotal}
 ];
-  let tableHtml = '<tr><th>Category</th><th>Item</th><th>Amount</th></tr>';
-  expenseItems.forEach(e=>{
-    tableHtml += `<tr><td>${e.category}</td><td>${e.item}</td><td>${fmt(e.amount)}</td></tr>`;
+
+// Cost categories currently included
+const activeCosts = new Set([
+  'Materials',
+  'Salary',
+  'Utilities & Operations'
+]);
+
+const costColors = {
+  'Materials': teal,
+  'Salary': ink,
+  'Utilities & Operations': signal
+};
+
+const costTotals = {
+  'Materials': totalMaterials,
+  'Salary': totalSalary,
+  'Utilities & Operations': totalUtilities
+};
+
+let costTrendChart;
+let costDonutChart;
+
+
+function toggleCost(category){
+
+  if(activeCosts.has(category)){
+
+    // Do not allow all categories to be removed
+    if(activeCosts.size === 1) return;
+
+    activeCosts.delete(category);
+
+  } else {
+
+    activeCosts.add(category);
+
+  }
+
+  renderCostPage();
+}
+
+// Render all linked Cost visuals
+function renderCostPage(){
+
+  const activeTypes = expenseTypes.filter(type =>
+    activeCosts.has(type)
+  );
+
+
+  // ---------------- KPI CARDS ----------------
+
+  const kpiMap = {
+    'Materials':'kpi-materials',
+    'Salary':'kpi-salary',
+    'Utilities & Operations':'kpi-utilities'
+  };
+
+  expenseTypes.forEach(type => {
+
+    const el = document.getElementById(kpiMap[type]);
+    const card = el.parentElement;
+
+    if(activeCosts.has(type)){
+      card.style.opacity = '1';
+      card.style.cursor = 'pointer';
+      card.style.background = '';
+    } else {
+      card.style.opacity = '0.30';
+      card.style.cursor = 'pointer';
+      card.style.background = '#F1EBDD';
+    }
+
+    card.onclick = () => toggleCost(type);
   });
-  tableHtml += `<tr><td colspan="2"><strong>Total</strong></td><td><strong>${fmt(totalMaterials+totalSalary+totalUtilities)}</strong></td></tr>`;
+
+
+  // ---------------- COST TREND ----------------
+
+  if(costTrendChart){
+    costTrendChart.destroy();
+  }
+
+  const trendDatasets = activeTypes.map(type => ({
+    label:type,
+    data:expensesByType[type],
+    borderColor:costColors[type],
+    backgroundColor:costColors[type],
+    tension:0,
+    pointRadius:4,
+    pointBackgroundColor:costColors[type],
+    borderWidth:2
+  }));
+
+  costTrendChart = new Chart(
+    document.getElementById('gm-cost-trend'),
+    {
+      plugins:[legendSpacing],
+      type:'line',
+
+      data:{
+        labels:months,
+        datasets:trendDatasets
+      },
+
+      options:{
+        responsive:true,
+
+        layout:{
+          padding:{top:8}
+        },
+
+        scales:{
+          x:{
+            grid:{display:false},
+            ticks:{
+              autoSkip:false,
+              callback:function(value){
+
+                const label = this.getLabelForValue(value);
+
+                if(
+                  label === 'Jul 2024' ||
+                  label === 'Jan 2025' ||
+                  label === 'Jul 2025' ||
+                  label === 'Jan 2026' ||
+                  label === 'Jun 2026'
+                ){
+                  return label;
+                }
+
+                return '';
+              }
+            }
+          },
+
+          y:{
+            min:0,
+            max:100000,
+            grid:{color:'#EFEBDE'},
+            ticks:{
+              stepSize:20000,
+              callback:v=>fmtShort(v)
+            }
+          }
+        },
+
+        plugins:{
+          legend:{
+            position:'top',
+            align:'start',
+            labels:{
+              usePointStyle:true,
+              pointStyle:'circle',
+              font:{weight:'600'}
+            },
+
+            // Clicking the legend also excludes/includes
+            onClick:function(e, legendItem){
+              toggleCost(legendItem.text);
+            }
+          },
+
+          datalabels:{
+            display:false
+          }
+        }
+      }
+    }
+  );
+
+
+  // ---------------- COST DONUT ----------------
+
+  if(costDonutChart){
+    costDonutChart.destroy();
+  }
+
+  const donutValues = activeTypes.map(type =>
+    costTotals[type]
+  );
+
+  costDonutChart = new Chart(
+    document.getElementById('gm-cost-donut'),
+    {
+      type:'doughnut',
+
+      data:{
+        labels:activeTypes,
+        datasets:[{
+          data:donutValues,
+          backgroundColor:activeTypes.map(type =>
+            costColors[type]
+          )
+        }]
+      },
+
+      options:{
+        responsive:true,
+
+        onClick:(event, elements) => {
+
+          if(elements.length > 0){
+
+            const index = elements[0].index;
+            const category =
+              costDonutChart.data.labels[index];
+
+            toggleCost(category);
+          }
+        },
+
+        plugins:{
+          legend:{
+            position:'bottom',
+
+            onClick:function(e, legendItem){
+              toggleCost(legendItem.text);
+            }
+          },
+
+          datalabels:{
+            formatter:(value,ctx)=>{
+
+              const visibleTotal =
+                ctx.chart.data.datasets[0].data
+                .reduce((a,b)=>a+b,0);
+
+              return (
+                value / visibleTotal * 100
+              ).toFixed(1) + '%';
+            },
+
+            color:'#fff',
+            font:{weight:'600'}
+          }
+        }
+      }
+    }
+  );
+
+
+  // ---------------- EXPENSE BREAKDOWN ----------------
+
+  const expenseTable =
+    document.getElementById('gm-expense-table');
+
+  const visibleItems = expenseItems.filter(item =>
+    activeCosts.has(item.category)
+  );
+
+  let tableHtml =
+    '<tr><th>Category</th><th>Item</th><th>Amount</th></tr>';
+
+  visibleItems.forEach(item => {
+
+    tableHtml += `
+      <tr>
+        <td>${item.category}</td>
+        <td>${item.item}</td>
+        <td>${fmt(item.amount)}</td>
+      </tr>
+    `;
+  });
+
+  const visibleTotal = activeTypes.reduce(
+    (sum,type)=>sum + costTotals[type],
+    0
+  );
+
+  tableHtml += `
+    <tr>
+      <td colspan="2"><strong>Total</strong></td>
+      <td><strong>${fmt(visibleTotal)}</strong></td>
+    </tr>
+  `;
+
   expenseTable.innerHTML = tableHtml;
+}
+
+
+// Initial Cost page
+renderCostPage();
 
   // ---- Tab switching ----
   document.querySelectorAll('.gm-tab').forEach(btn=>{
