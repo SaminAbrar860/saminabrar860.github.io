@@ -303,6 +303,7 @@ const expensesByType = {
     {name:'Iced Coffee Small', category:'Drinks', sales:44500, qty:475},
     {name:'Sweet Heart', category:'Donut', sales:38000, qty:835},
     {name:'Chicken Fry', category:'Hot & Spicy', sales:42000, qty:390},
+    {name:'Combo', category:'Combo', sales:44000, qty:220},
   ];
 
   function sumArr(a){ return a.reduce((x,y)=>x+y,0); }
@@ -573,7 +574,34 @@ new Chart(document.getElementById('gm-top-sales'), {
       type:'line',
       data:{ labels:months, datasets:[{label:'Net sales', data:trendData, borderColor:brass, backgroundColor:brass, tension:0, pointRadius:5, pointBackgroundColor:brass, borderWidth:2}]},
       options:{ responsive:true, layout:{padding:{top:24}},
-        scales:{ x:{grid:{display:false}}, y:{suggestedMax: Math.max(...trendData)*1.25, grid:{color:'#EFEBDE'}, ticks:{callback:v=>fmtShort(v)}} },
+        scales:{
+  x:{
+    grid:{display:false},
+    ticks:{
+      autoSkip:false,
+      callback:function(value){
+        const label = this.getLabelForValue(value);
+
+        if (
+          label === 'Jul 2024' ||
+          label === 'Jan 2025' ||
+          label === 'Jul 2025' ||
+          label === 'Jan 2026' ||
+          label === 'Jun 2026'
+        ){
+          return label;
+        }
+
+        return '';
+      }
+    }
+  },
+  y:{
+    suggestedMax:Math.max(...trendData)*1.25,
+    grid:{color:'#EFEBDE'},
+    ticks:{callback:v=>fmtShort(v)}
+  }
+},
         plugins:{legend:{display:false},
         datalabels:{align:'top', offset:8, font:{size:10,weight:'700'}, formatter:v=>fmtShort(v), color:brass}
       }}
