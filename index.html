@@ -48,7 +48,7 @@
     <div class="ctas">
       <a href="#contact" class="btn btn-primary">Contact Me</a>
       <a href="#projects" class="btn btn-outline">View Projects</a>
-      <a href="#" class="btn-link" id="cvLink">Download CV ↓</a>
+      <a href="Shah%20Mohammad%20Samin%20Abrar%20CV.pdf" class="btn-link" download>Download CV ↓</a>
     </div>
   </div>
 </section>
@@ -480,12 +480,6 @@
     this.outerHTML = '<a href="tel:0450383523">0450 383 523</a>';
   });
 
-  // CV download placeholder
-  document.getElementById('cvLink').addEventListener('click', function(e){
-    e.preventDefault();
-    alert('Add your CV PDF to this folder as "Samin_Abrar_CV.pdf" and update this link to point to it.');
-  });
-
   // ===== FAQ scripted assistant =====
   const faqToggle = document.getElementById('faq-toggle');
   const faqPanel = document.getElementById('faq-panel');
@@ -494,15 +488,16 @@
 
   const faqTree = {
     root: {
-      msg: "Hi, I'm a scripted assistant. Ask me anything about Samin.",
-      options: [
-        {label:"What's his background?", next:"background"},
-        {label:"What projects has he worked on?", next:"projects"},
-        {label:"What are his skills?", next:"skills"},
-        {label:"Is he available for work?", next:"availability"},
-        {label:"How can I contact him?", next:"contact"},
-      ]
-    },
+  msg: "Hi, I'm a scripted assistant. Ask me anything about Samin.",
+  options: [
+    {label:"What's his background?", next:"background"},
+    {label:"What projects has he worked on?", next:"projects"},
+    {label:"What are his skills?", next:"skills"},
+    {label:"Is he available for work?", next:"availability"},
+    {label:"Can I download his CV?", next:"cv"},
+    {label:"How can I contact him?", next:"contact"},
+  ]
+},
     background: {
       msg:"Samin has experience across data analysis, business operations, leadership and entrepreneurship. He works with Python, SQL, Power BI and R. He has worked as an Online Data Analyst with TELUS Digital AI Community and previously served as a Lieutenant Commander in the Bangladesh Navy.",
       options:[]
@@ -519,6 +514,10 @@
       msg:"Samin is completing MBAN in December 2026 and is open to internship, graduate or entry-level Data Analyst, Business Analyst and BI Analyst roles across Adelaide and Australia, including on-site, hybrid and remote.",
       options:[]
     },
+cv: {
+  msg:'Yes. You can <a href="Shah%20Mohammad%20Samin%20Abrar%20CV.pdf" download>download Samin\'s CV here</a>.',
+  options:[]
+},
     contact: {
       msg:'Best reached by email at <a href="mailto:saminabrar860@gmail.com">saminabrar860@gmail.com</a> or via the <a href="index.html#contact">Contact section</a>.',
       options:[]
