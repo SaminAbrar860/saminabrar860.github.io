@@ -372,7 +372,7 @@
 
       <!-- COST PAGE -->
       <div class="gm-page" id="gm-cost" style="display:none;">
-        <div class="gm-kpi-row">
+        <div class="gm-kpi-row" style="grid-template-columns:repeat(3,minmax(0,1fr));">
           <div class="gm-kpi"><div class="gm-kpi-num" id="kpi-materials">Tk 0</div><div class="gm-kpi-label">Total Materials Cost</div></div>
           <div class="gm-kpi"><div class="gm-kpi-num" id="kpi-salary">Tk 0</div><div class="gm-kpi-label">Total Salary Cost</div></div>
           <div class="gm-kpi"><div class="gm-kpi-num" id="kpi-utilities">Tk 0</div><div class="gm-kpi-label">Total Utilities &amp; Operations</div></div>
@@ -1120,7 +1120,7 @@ function renderCostPage(){
                     ...activeTypes.flatMap(type => expensesByType[type])
                   ) / 10000
                 ) * 10000
-              : 100000,
+              : 60000,
             grid:{color:'#EFEBDE'},
             ticks:{
               stepSize: window.innerWidth <= 600 ? 10000 : 20000,
@@ -1137,11 +1137,23 @@ function renderCostPage(){
           },
           datalabels:{
             display:(ctx)=> window.innerWidth > 600,
-            align:'top',
-            offset:6,
+            align:(ctx)=>{
+              const label = ctx.dataset.label;
+              if(label === 'Utilities & Operations') return 'bottom';
+              return 'top';
+            },
+            anchor:'center',
+            offset:(ctx)=>{
+              const label = ctx.dataset.label;
+              if(label === 'Materials') return 8;
+              if(label === 'Salary') return 2;
+              if(label === 'Utilities & Operations') return 7;
+              return 4;
+            },
             font:{size:10,weight:'700'},
             formatter:v=>fmtShort(v),
-            color:(ctx)=>ctx.dataset.borderColor
+            color:(ctx)=>ctx.dataset.borderColor,
+            clamp:true
           },
           legend:{
             position:'top',
@@ -1156,10 +1168,6 @@ function renderCostPage(){
             onClick:function(e, legendItem){
               toggleCost(legendItem.text);
             }
-          },
-
-          datalabels:{
-            display:false
           }
         }
       }
