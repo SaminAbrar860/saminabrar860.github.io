@@ -752,7 +752,7 @@ new Chart(document.getElementById('gm-trend-chart'), {
       },
 
       datalabels:{
-        display:(ctx)=> Math.min(window.innerWidth, window.innerHeight) > 600,
+        display:(ctx)=> (window.matchMedia('(orientation: landscape)').matches || Math.min(window.screen.width, window.screen.height) > 600),
         align:'top',
         offset:8,
         font:{
@@ -931,7 +931,7 @@ table.querySelectorAll('tr[data-category]').forEach(row => {
         plugins:{
         tooltip:{enabled:true,mode:'index',intersect:false},
         legend:{display:false},
-        datalabels:{display:(ctx)=> Math.min(window.innerWidth, window.innerHeight) > 600, align:'top', offset:8, font:{size:10,weight:'700'}, formatter:v=>fmtShort(v), color:brass}
+        datalabels:{display:(ctx)=> (window.matchMedia('(orientation: landscape)').matches || Math.min(window.screen.width, window.screen.height) > 600), align:'top', offset:8, font:{size:10,weight:'700'}, formatter:v=>fmtShort(v), color:brass}
       }}
     });
 
@@ -1149,7 +1149,7 @@ function renderCostPage(){
             intersect:false
           },
           datalabels:{
-            display:(ctx)=> Math.min(window.innerWidth, window.innerHeight) > 600,
+            display:(ctx)=> (window.matchMedia('(orientation: landscape)').matches || Math.min(window.screen.width, window.screen.height) > 600),
             align:(ctx)=>{
               const label = ctx.dataset.label;
               if(label === 'Utilities & Operations') return 'bottom';
@@ -1456,6 +1456,13 @@ renderCostPage();
     resizeGoodMinuteCharts();
     setTimeout(resizeGoodMinuteCharts, 350);
     setTimeout(resizeGoodMinuteCharts, 750);
+    setTimeout(function(){
+      if(window.Chart && Chart.instances){
+        Object.values(Chart.instances).forEach(function(chart){
+          if(chart) chart.update();
+        });
+      }
+    }, 900);
   }, { passive: true });
 })();
 </script>
