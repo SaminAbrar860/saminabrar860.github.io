@@ -250,6 +250,41 @@
     }
   }
 
+
+  @media(max-width:600px) and (orientation:portrait){
+    #gm-trend-chart,
+    #gm-sales-trend,
+    #gm-cost-trend{
+      height:300px !important;
+      min-height:300px !important;
+      max-height:300px !important;
+    }
+  }
+
+  @media(max-width:600px) and (orientation:landscape){
+    #gm-trend-chart,
+    #gm-sales-trend,
+    #gm-cost-trend{
+      height:auto !important;
+      min-height:0 !important;
+      max-height:none !important;
+    }
+  }
+
+
+  /* Cost Analysis desktop polish — visual only */
+  @media(min-width:601px){
+    #gm-cost .gm-kpi-row{
+      grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+      width:100%;
+    }
+
+    #gm-cost .gm-kpi{
+      width:auto;
+      min-width:0;
+    }
+  }
+
 </style>
 </head>
 <body>
@@ -639,6 +674,7 @@ new Chart(document.getElementById('gm-trend-chart'), {
 
   options:{
     responsive:true,
+    maintainAspectRatio: window.innerWidth > 600,
     interaction:{
       mode:'index',
       intersect:false
@@ -844,6 +880,7 @@ table.querySelectorAll('tr[data-category]').forEach(row => {
       type:'line',
       data:{ labels:months, datasets:[{label:'Net sales', data:trendData, borderColor:brass, backgroundColor:brass, tension:0, pointRadius:window.innerWidth <= 600 ? 3 : 5, pointBackgroundColor:brass, borderWidth:2}]},
       options:{ responsive:true,
+        maintainAspectRatio: window.innerWidth > 600,
         interaction:{mode:'index',intersect:false},
         events:['mousemove','mouseout','click','touchstart','touchmove'],
         layout:{padding:{top:24}},
@@ -1040,6 +1077,7 @@ function renderCostPage(){
 
       options:{
         responsive:true,
+        maintainAspectRatio: window.innerWidth > 600,
         interaction:{
           mode:'index',
           intersect:false
@@ -1096,6 +1134,14 @@ function renderCostPage(){
             enabled:true,
             mode:'index',
             intersect:false
+          },
+          datalabels:{
+            display:(ctx)=> window.innerWidth > 600,
+            align:'top',
+            offset:6,
+            font:{size:10,weight:'700'},
+            formatter:v=>fmtShort(v),
+            color:(ctx)=>ctx.dataset.borderColor
           },
           legend:{
             position:'top',
