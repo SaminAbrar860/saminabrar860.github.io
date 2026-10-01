@@ -272,6 +272,19 @@
   }
 
 
+
+  /* Phone landscape: keep line-chart canvas dimensions stable after rotation */
+  @media (orientation:landscape) and (max-height:600px){
+    #gm-trend-chart,
+    #gm-sales-trend,
+    #gm-cost-trend{
+      height:300px !important;
+      min-height:300px !important;
+      max-height:300px !important;
+      width:100% !important;
+    }
+  }
+
   /* Cost Analysis desktop polish — visual only */
   @media(min-width:601px){
     #gm-cost .gm-kpi-row{
@@ -739,7 +752,7 @@ new Chart(document.getElementById('gm-trend-chart'), {
       },
 
       datalabels:{
-        display:(ctx)=> window.innerWidth > 600,
+        display:(ctx)=> Math.min(window.innerWidth, window.innerHeight) > 600,
         align:'top',
         offset:8,
         font:{
@@ -918,7 +931,7 @@ table.querySelectorAll('tr[data-category]').forEach(row => {
         plugins:{
         tooltip:{enabled:true,mode:'index',intersect:false},
         legend:{display:false},
-        datalabels:{display:(ctx)=> window.innerWidth > 600, align:'top', offset:8, font:{size:10,weight:'700'}, formatter:v=>fmtShort(v), color:brass}
+        datalabels:{display:(ctx)=> Math.min(window.innerWidth, window.innerHeight) > 600, align:'top', offset:8, font:{size:10,weight:'700'}, formatter:v=>fmtShort(v), color:brass}
       }}
     });
 
@@ -1136,7 +1149,7 @@ function renderCostPage(){
             intersect:false
           },
           datalabels:{
-            display:(ctx)=> window.innerWidth > 600,
+            display:(ctx)=> Math.min(window.innerWidth, window.innerHeight) > 600,
             align:(ctx)=>{
               const label = ctx.dataset.label;
               if(label === 'Utilities & Operations') return 'bottom';
@@ -1352,7 +1365,7 @@ renderCostPage();
   function applyResponsiveChartSettings(chart) {
     if (!chart || !chart.canvas) return;
 
-    const mobile = window.innerWidth <= 600;
+    const mobile = Math.min(window.innerWidth, window.innerHeight) <= 600;
     const id = chart.canvas.id;
 
     // These three line charts use different aspect-ratio behaviour on mobile.
@@ -1429,6 +1442,16 @@ renderCostPage();
   window.addEventListener('resize', resizeGoodMinuteCharts, { passive: true });
 
   window.addEventListener('orientationchange', function () {
+    // Clear Chart.js' previous inline canvas dimensions so Safari does not
+    // carry the portrait geometry into landscape.
+    ['gm-trend-chart','gm-sales-trend','gm-cost-trend'].forEach(function(id){
+      const canvas = document.getElementById(id);
+      if(canvas){
+        canvas.style.width = '100%';
+        canvas.style.height = '';
+      }
+    });
+
     // Run after Safari has completed both stages of its orientation layout.
     resizeGoodMinuteCharts();
     setTimeout(resizeGoodMinuteCharts, 350);
