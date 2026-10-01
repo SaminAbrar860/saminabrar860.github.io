@@ -488,15 +488,15 @@
 
   const faqTree = {
     root: {
-  msg: "Hi, I'm a scripted assistant. Ask me anything about Samin.",
-  options: [
-    {label:"What's his background?", next:"background"},
-    {label:"What projects has he worked on?", next:"projects"},
-    {label:"What are his skills?", next:"skills"},
-    {label:"Is he available for work?", next:"availability"},
-    {label:"Can I download his CV?", next:"cv"},
-    {label:"How can I contact him?", next:"contact"},
-  ]
+  msg: "Hi, I'm a scripted assistant. Select a topic below to learn more about his experience and work.",
+ options: [
+  {label:"Professional background", next:"background"},
+  {label:"Analytics projects", next:"projects"},
+  {label:"Technical skills", next:"skills"},
+  {label:"Career interests & availability", next:"availability"},
+  {label:"Download CV", next:"cv"},
+  {label:"Contact information", next:"contact"},
+]
 },
     background: {
       msg:"Samin has experience across data analysis, business operations, leadership and entrepreneurship. He works with Python, SQL, Power BI and R. He has worked as an Online Data Analyst with TELUS Digital AI Community and previously served as a Lieutenant Commander in the Bangladesh Navy.",
