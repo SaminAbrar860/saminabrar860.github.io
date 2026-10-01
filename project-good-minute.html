@@ -1287,20 +1287,86 @@ function renderCostPage(){
 // Initial Cost page
 renderCostPage();
 
-  // ---- Tab switching ----
+  // ---- Tab switching + preserve selected page on refresh ----
+  function showDashboardPage(page, updateHash = true){
+    const validPages = ['overview','sales','cost'];
+    if(!validPages.includes(page)) page = 'overview';
+
+    document.querySelectorAll('.gm-tab').forEach(b=>{
+      b.classList.toggle('active', b.getAttribute('data-page') === page);
+    });
+
+    document.querySelectorAll('.gm-page').forEach(p=>p.style.display='none');
+    document.getElementById('gm-'+page).style.display='block';
+
+    if(page === 'sales'){
+      renderSalesPage(document.getElementById('gm-category-filter').value);
+    }
+
+    if(page === 'cost'){
+      renderCostPage();
+    }
+
+    if(updateHash){
+      history.replaceState(null, '', '#' + page);
+    }
+
+    // Recalculate chart size after a previously hidden dashboard page becomes visible
+    requestAnimationFrame(()=>{
+      setTimeout(()=>{
+        if(window.Chart && Chart.instances){
+          Object.values(Chart.instances).forEach(chart=>{
+            if(chart){
+              chart.resize();
+              chart.update('none');
+            }
+          });
+        }
+      }, 80);
+    });
+  }
+
   document.querySelectorAll('.gm-tab').forEach(btn=>{
     btn.addEventListener('click', ()=>{
-      document.querySelectorAll('.gm-tab').forEach(b=>b.classList.remove('active'));
-      btn.classList.add('active');
-      document.querySelectorAll('.gm-page').forEach(p=>p.style.display='none');
-      const page = btn.getAttribute('data-page');
-      document.getElementById('gm-'+page).style.display='block';
-      if(page==='sales') renderSalesPage(document.getElementById('gm-category-filter').value);
+      showDashboardPage(btn.getAttribute('data-page'));
     });
   });
 
   // initial render
   renderSalesPage('all');
+
+  // Restore the selected dashboard page from the URL after refresh
+  const initialPage = window.location.hash.replace('#','');
+  showDashboardPage(
+    ['overview','sales','cost'].includes(initialPage) ? initialPage : 'overview',
+    false
+  );
+})();
+</script>
+
+
+<script>
+(function () {
+  let gmResizeTimer;
+
+  function resizeGoodMinuteCharts() {
+    clearTimeout(gmResizeTimer);
+    gmResizeTimer = setTimeout(function () {
+      if (!window.Chart || !Chart.instances) return;
+
+      Object.values(Chart.instances).forEach(function (chart) {
+        if (!chart) return;
+        chart.resize();
+        chart.update('none');
+      });
+    }, 250);
+  }
+
+  window.addEventListener('resize', resizeGoodMinuteCharts, { passive: true });
+  window.addEventListener('orientationchange', function () {
+    resizeGoodMinuteCharts();
+    setTimeout(resizeGoodMinuteCharts, 500);
+  }, { passive: true });
 })();
 </script>
 
