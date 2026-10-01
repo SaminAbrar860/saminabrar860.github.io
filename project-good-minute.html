@@ -1349,23 +1349,90 @@ renderCostPage();
 (function () {
   let gmResizeTimer;
 
+  function applyResponsiveChartSettings(chart) {
+    if (!chart || !chart.canvas) return;
+
+    const mobile = window.innerWidth <= 600;
+    const id = chart.canvas.id;
+
+    // These three line charts use different aspect-ratio behaviour on mobile.
+    // Re-apply the option after every orientation change instead of keeping
+    // the value that was calculated only when the chart was first created.
+    if (id === 'gm-trend-chart' || id === 'gm-sales-trend' || id === 'gm-cost-trend') {
+      chart.options.maintainAspectRatio = !mobile;
+    }
+
+    if (id === 'gm-trend-chart') {
+      chart.data.datasets.forEach(ds => {
+        if (ds.label !== 'Average') ds.pointRadius = mobile ? 3 : 5;
+      });
+
+      const values = chart.data.datasets
+        .filter(ds => ds.label !== 'Average')
+        .flatMap(ds => ds.data.map(Number));
+
+      const maxValue = Math.max(...values);
+      chart.options.scales.y.max = mobile
+        ? Math.ceil(maxValue / 20000) * 20000
+        : 150000;
+      chart.options.scales.y.ticks.stepSize = mobile ? 20000 : 30000;
+    }
+
+    if (id === 'gm-sales-trend') {
+      chart.data.datasets.forEach(ds => {
+        ds.pointRadius = mobile ? 3 : 5;
+      });
+
+      const values = chart.data.datasets.flatMap(ds => ds.data.map(Number));
+      const maxValue = Math.max(...values);
+      chart.options.scales.y.suggestedMax = mobile
+        ? maxValue * 1.12
+        : maxValue * 1.25;
+    }
+
+    if (id === 'gm-cost-trend') {
+      chart.data.datasets.forEach(ds => {
+        ds.pointRadius = 4;
+      });
+
+      const values = chart.data.datasets.flatMap(ds => ds.data.map(Number));
+      const maxValue = Math.max(...values);
+      chart.options.scales.y.max = mobile
+        ? Math.ceil(maxValue / 10000) * 10000
+        : 60000;
+      chart.options.scales.y.ticks.stepSize = mobile ? 10000 : 20000;
+    }
+
+    chart.resize();
+    chart.update('none');
+  }
+
   function resizeGoodMinuteCharts() {
     clearTimeout(gmResizeTimer);
     gmResizeTimer = setTimeout(function () {
       if (!window.Chart || !Chart.instances) return;
 
-      Object.values(Chart.instances).forEach(function (chart) {
-        if (!chart) return;
-        chart.resize();
-        chart.update('none');
-      });
-    }, 250);
+      Object.values(Chart.instances).forEach(applyResponsiveChartSettings);
+
+      // Safari can preserve a scroll position that is outside the new
+      // document height after rotating. Clamp it back into the page.
+      const maxScroll = Math.max(
+        0,
+        document.documentElement.scrollHeight - window.innerHeight
+      );
+      if (window.scrollY > maxScroll) {
+        window.scrollTo(0, maxScroll);
+      }
+    }, 220);
   }
 
   window.addEventListener('resize', resizeGoodMinuteCharts, { passive: true });
+
   window.addEventListener('orientationchange', function () {
+    // Run after Safari has completed both stages of its orientation layout.
     resizeGoodMinuteCharts();
-    setTimeout(resizeGoodMinuteCharts, 500);
+    setTimeout(resizeGoodMinuteCharts, 350);
+    setTimeout(resizeGoodMinuteCharts, 750);
   }, { passive: true });
 })();
 </script>
